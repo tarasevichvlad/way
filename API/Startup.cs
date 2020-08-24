@@ -44,7 +44,7 @@ namespace API
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-            services.AddAuthentication(x =>
+            /*services.AddAuthentication(x =>
                 {
                     
                     x.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -55,7 +55,7 @@ namespace API
                 {
                     x.ClientId = Configuration["Authentication:Microsoft:ClientId"];
                     x.ClientSecret = Configuration["Authentication:Microsoft:ClientSecret"];
-                });
+                });*/
 
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
         }
