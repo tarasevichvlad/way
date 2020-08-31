@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using Domain.Passengers;
 using Domain.Shared;
 using Domain.Users;
 
@@ -14,6 +16,7 @@ namespace Domain.Trips
         public string To { get; private set; }
         public DateTime StartingTime { get; private set; }
         public DateTime FinishTime { get; private set; }
+        public List<PassengerInfo> Passengers { get; private set; } = new List<PassengerInfo>();
 
         public Trip() {}
 
@@ -30,6 +33,18 @@ namespace Domain.Trips
         public void AddComment(string comment)
         {
             Comment = comment;
+        }
+
+        public void AddPassenger(PassengerInfo passengerInfo)
+        {
+            Passengers.Add(passengerInfo);
+        }
+
+        public void RemovePassenger(User passenger)
+        {
+            var passengerInfo = Passengers.Find(x => x.PassengerId.Equals(passenger.Id));
+
+            Passengers.Remove(passengerInfo);
         }
     }
 }

@@ -1,5 +1,8 @@
+using System;
+using System.Linq;
 using Application.Interfaces.Persistence;
 using Domain.Trips;
+using Microsoft.EntityFrameworkCore;
 using Persistence.Shared;
 
 namespace Persistence.Trips
@@ -8,6 +11,13 @@ namespace Persistence.Trips
     {
         public TripRepository(DatabaseContext databaseContext) : base(databaseContext)
         {
+        }
+
+        public Trip GetTripWithPassengers(Guid tripId)
+        {
+            return DbSet
+                .Include(x => x.Passengers)
+                .SingleOrDefault(x => x.Id.Equals(tripId));
         }
     }
 }

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Persistence.Migrations
 {
-    public partial class CreateDB : Migration
+    public partial class InitDb : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -91,14 +91,49 @@ namespace Persistence.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "PassengerInfos",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    TripId = table.Column<Guid>(type: "uuid", nullable: false),
+                    PassengerId = table.Column<Guid>(type: "uuid", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PassengerInfos", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PassengerInfos_Trips_TripId",
+                        column: x => x.TripId,
+                        principalTable: "Trips",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PassengerInfos_Users_PassengerId",
+                        column: x => x.PassengerId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.InsertData(
                 table: "Cars",
                 columns: new[] { "Id", "Model" },
                 values: new object[,]
                 {
-                    { new Guid("08a26187-99c8-46a7-9aa1-1bfc19fe0025"), "Model 1" },
-                    { new Guid("6796fa29-a382-4b1c-8bb8-a4e3b6c5f181"), "Model 2" }
+                    { new Guid("f9a10253-f4b5-4804-9c4c-69e4b8970b11"), "Model 1" },
+                    { new Guid("976c8c3c-2838-481a-8c53-1efa6da31453"), "Model 2" }
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PassengerInfos_PassengerId",
+                table: "PassengerInfos",
+                column: "PassengerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PassengerInfos_TripId",
+                table: "PassengerInfos",
+                column: "TripId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Reviews_FromId",
@@ -123,6 +158,9 @@ namespace Persistence.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "PassengerInfos");
+
             migrationBuilder.DropTable(
                 name: "Reviews");
 

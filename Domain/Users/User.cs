@@ -12,11 +12,20 @@ namespace Domain.Users
         public int Phone { get; private set; }
         public Car Car { get; private set; }
 
-        public User(string firstName, string lastName, int phone)
+        public User(string firstName, string lastName)
         {
             FirstName = firstName;
             LastName = lastName;
+        }
+
+        public User(string firstName, string lastName, int phone) : this(firstName, lastName)
+        {
             Phone = phone;
+        }
+
+        public void AddId(Guid id)
+        {
+            Id = id;
         }
 
         public void AddCar(Car car)

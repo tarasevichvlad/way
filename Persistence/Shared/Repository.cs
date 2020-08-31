@@ -22,7 +22,7 @@ namespace Persistence.Shared
 
         public T Get(Guid id)
         {
-            return DbSet.Single(x => x.Id.Equals(id));
+            return DbSet.SingleOrDefault(x => x.Id.Equals(id));
         }
 
         public void Add(T entity)

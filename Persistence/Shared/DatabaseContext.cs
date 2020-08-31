@@ -1,10 +1,12 @@
 using Domain.Cars;
+using Domain.Passengers;
 using Domain.Reviews;
 using Domain.Shared;
 using Domain.Trips;
 using Domain.Users;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Cars;
+using Persistence.Passengers;
 using Persistence.Reviews;
 using Persistence.Trips;
 using Persistence.Users;
@@ -17,6 +19,7 @@ namespace Persistence.Shared
         public DbSet<Car> Cars { get; set; }
         public DbSet<Review> Reviews { get; set; }
         public DbSet<Trip> Trips { get; set; }
+        public DbSet<PassengerInfo> PassengerInfos { get; set; }
 
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
         {
@@ -31,6 +34,7 @@ namespace Persistence.Shared
             modelBuilder.ApplyConfiguration(new ReviewConfiguration());
             modelBuilder.ApplyConfiguration(new TripConfiguration());
             modelBuilder.ApplyConfiguration(new UserConfiguration());
+            modelBuilder.ApplyConfiguration(new PassengerInfoConfiguration());
         }
 
         public DbSet<T> GetDbSet<T>() where T : class, IEntity

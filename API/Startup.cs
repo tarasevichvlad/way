@@ -1,14 +1,16 @@
-using System.Collections.Generic;
+using API.AuthHandlers;
+using Application.Cars.Queries.GetAllCarsQuery;
 using Application.Interfaces.Persistence;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.Google;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authentication.MicrosoftAccount;
-using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Application.Trips.Commands.AddPassengerCommand;
+using Application.Trips.Commands.CreateTripCommand;
+using Application.Trips.Commands.DeleteTripCommand;
+using Application.Trips.Commands.RemovePassengerCommand;
+using Application.Trips.Queries.GetAllTripsQuery;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.AzureADB2C.UI;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -30,37 +32,16 @@ namespace API
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
 
-            services.AddDbContext<DatabaseContext>(x =>
-                x.UseNpgsql("Host=localhost;Port=54321;Database=way;Username=postgres;Password=secret"));
-
-            services.AddScoped<ICarRepository, CarRepository>();
-            services.AddScoped<IReviewRepository, ReviewRepository>();
-            services.AddScoped<ITripRepository, TripRepository>();
-            services.AddScoped<IUserRepository, UserRepository>();
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
-
-            /*services.AddAuthentication(x =>
-                {
-                    
-                    x.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-                    x.DefaultChallengeScheme = MicrosoftAccountDefaults.AuthenticationScheme;
-                })
-                .AddJwtBearer()
-                .AddOpenIdConnect(x =>
-                {
-                    x.ClientId = Configuration["Authentication:Microsoft:ClientId"];
-                    x.ClientSecret = Configuration["Authentication:Microsoft:ClientSecret"];
-                });*/
-
-            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            InitDb(services);
+            InitRepositories(services);
+            InitCommandsAndQueries(services);
+            InitAuth(services);
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -76,6 +57,57 @@ namespace API
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+        }
+
+        private static void InitCommandsAndQueries(IServiceCollection serviceCollection)
+        {
+            // Init queries
+            serviceCollection.AddScoped<IGetAllCarsQuery, GetAllCarsQuery>();
+            serviceCollection.AddScoped<IGetAllTripsQuery, GetAllTripsQuery>();
+
+            // Init commands
+            serviceCollection.AddScoped<ICreateTripCommand, CreateTripCommand>();
+            serviceCollection.AddScoped<IAddPassengerCommand, AddPassengerCommand>();
+            serviceCollection.AddScoped<IRemovePassengerCommand, RemovePassengerCommand>();
+            serviceCollection.AddScoped<IDeleteTripCommand, DeleteTripCommand>();
+        }
+
+        private static void InitRepositories(IServiceCollection serviceCollection)
+        {
+            serviceCollection.AddScoped<ICarRepository, CarRepository>();
+            serviceCollection.AddScoped<IReviewRepository, ReviewRepository>();
+            serviceCollection.AddScoped<ITripRepository, TripRepository>();
+            serviceCollection.AddScoped<IUserRepository, UserRepository>();
+            serviceCollection.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            serviceCollection.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+        }
+
+        private void InitAuth(IServiceCollection serviceCollection)
+        {
+            serviceCollection.AddAuthentication(AzureADB2CDefaults.JwtBearerAuthenticationScheme)
+                .AddAzureADB2CBearer(options => Configuration.Bind("AzureAd", options));
+
+            serviceCollection.AddAuthorization(x =>
+            {
+                var policy = new AuthorizationPolicyBuilder()
+                    .RequireAuthenticatedUser()
+                    .AddRequirements(new UserExist())
+                    .Build();
+
+                x.FallbackPolicy = policy;
+            });
+
+            serviceCollection.AddScoped<IAuthorizationHandler, AuthHandler>();
+        }
+
+        private void InitDb(IServiceCollection serviceCollection)
+        {
+            serviceCollection.Configure<DatabaseOptions>(Configuration.GetSection(DatabaseOptions.Database));
+
+            var dbConnection = Configuration.GetSection($"{DatabaseOptions.Database}:ConnectionString");
+            serviceCollection.AddDbContext<DatabaseContext>(x =>
+                x.UseNpgsql(dbConnection.Value));
         }
     }
 }
