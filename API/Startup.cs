@@ -9,6 +9,7 @@ using Application.Trips.Commands.AddPassengerCommand;
 using Application.Trips.Commands.CreateTripCommand;
 using Application.Trips.Commands.DeleteTripCommand;
 using Application.Trips.Commands.RemovePassengerCommand;
+using Application.Trips.Commands.UpdateTripCommand;
 using Application.Trips.Queries.GetAllTripsQuery;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.AzureADB2C.UI;
@@ -76,6 +77,7 @@ namespace API
             serviceCollection.AddScoped<IRemovePassengerCommand, RemovePassengerCommand>();
             serviceCollection.AddScoped<IDeleteTripCommand, DeleteTripCommand>();
             serviceCollection.AddScoped<ICreateReviewCommand, CreateReviewCommand>();
+            serviceCollection.AddScoped<IUpdateTripCommand, UpdateTripCommand>();
         }
 
         private static void InitRepositories(IServiceCollection serviceCollection)

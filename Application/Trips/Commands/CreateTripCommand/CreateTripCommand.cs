@@ -1,5 +1,6 @@
 using System;
 using Application.Interfaces.Persistence;
+using Application.Trips.Commands.Shared;
 using Domain.Trips;
 
 namespace Application.Trips.Commands.CreateTripCommand
@@ -17,7 +18,7 @@ namespace Application.Trips.Commands.CreateTripCommand
             _unitOfWork = unitOfWork;
         }
 
-        public void Execute(CreateTripModel model, Guid userId)
+        public void Execute(CreateAndUpdateTripModel model, Guid userId)
         {
             var user = _userRepository.Get(userId);
 

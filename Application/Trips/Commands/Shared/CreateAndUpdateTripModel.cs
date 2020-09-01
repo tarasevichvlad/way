@@ -1,8 +1,8 @@
 using System;
 
-namespace Application.Trips.Commands.CreateTripCommand
+namespace Application.Trips.Commands.Shared
 {
-    public class CreateTripModel
+    public class CreateAndUpdateTripModel
     {
         public string From { get; set; }
         public string To { get; set; }

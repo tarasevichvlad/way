@@ -48,5 +48,43 @@ namespace Domain.Trips
 
             Passengers.Remove(passengerInfo);
         }
+
+        public void Update(string from, string to, DateTime startingTime, DateTime finishTime, double price, int seats, string comment)
+        {
+            if (!From.Equals(from))
+            {
+                From = from;
+            }
+
+            if (!To.Equals(to))
+            {
+                To = to;
+            }
+
+            if (!StartingTime.Equals(startingTime))
+            {
+                StartingTime = startingTime;
+            }
+
+            if (!FinishTime.Equals(finishTime))
+            {
+                FinishTime = finishTime;
+            }
+
+            if (!Price.Equals(price))
+            {
+                Price = price;
+            }
+
+            if (!Seats.Equals(seats))
+            {
+                Seats = seats;
+            }
+            
+            if (!Comment.Equals(comment))
+            {
+                Comment = comment;
+            }
+        }
     }
 }

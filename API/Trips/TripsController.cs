@@ -6,6 +6,8 @@ using Application.Trips.Commands.AddPassengerCommand;
 using Application.Trips.Commands.CreateTripCommand;
 using Application.Trips.Commands.DeleteTripCommand;
 using Application.Trips.Commands.RemovePassengerCommand;
+using Application.Trips.Commands.Shared;
+using Application.Trips.Commands.UpdateTripCommand;
 using Application.Trips.Queries.GetAllTripsQuery;
 using Domain.Trips;
 using Microsoft.AspNetCore.Http;
@@ -22,19 +24,22 @@ namespace API.Trips
         private readonly IAddPassengerCommand _addPassengerCommand;
         private readonly IRemovePassengerCommand _removePassengerCommand;
         private readonly IDeleteTripCommand _deleteTripCommand;
+        private readonly IUpdateTripCommand _updateTripCommand;
 
         public TripsController(
             IGetAllTripsQuery getAllTripsQuery,
             ICreateTripCommand createTripCommand,
             IAddPassengerCommand addPassengerCommand,
             IRemovePassengerCommand removePassengerCommand,
-            IDeleteTripCommand deleteTripCommand)
+            IDeleteTripCommand deleteTripCommand,
+            IUpdateTripCommand updateTripCommand)
         {
             _getAllTripsQuery = getAllTripsQuery;
             _createTripCommand = createTripCommand;
             _addPassengerCommand = addPassengerCommand;
             _removePassengerCommand = removePassengerCommand;
             _deleteTripCommand = deleteTripCommand;
+            _updateTripCommand = updateTripCommand;
         }
 
         [HttpGet]
@@ -44,11 +49,11 @@ namespace API.Trips
         }
 
         [HttpPost]
-        public IActionResult Create(CreateTripModel createTripModel)
+        public IActionResult Create(CreateAndUpdateTripModel createAndUpdateTripModel)
         {
             var userId = User.GetUserIdentifier();
 
-            _createTripCommand.Execute(createTripModel, userId);
+            _createTripCommand.Execute(createAndUpdateTripModel, userId);
 
             return StatusCode(StatusCodes.Status201Created);
         }
@@ -76,6 +81,14 @@ namespace API.Trips
         {
             _removePassengerCommand.Execute(tripId, deletedUserId);
 
+            return StatusCode(StatusCodes.Status200OK);
+        }
+
+        [HttpPut("{tripId}")]
+        public IActionResult Update(Guid tripId, CreateAndUpdateTripModel createAndUpdateTripModel)
+        {
+            _updateTripCommand.Execute(createAndUpdateTripModel, tripId);
+            
             return StatusCode(StatusCodes.Status200OK);
         }
     }

@@ -30,6 +30,11 @@ namespace Persistence.Shared
             DbSet.Add(entity);
         }
 
+        public void Update(T entity)
+        {
+            DbSet.Update(entity);
+        }
+
         public void Remove(T entity)
         {
             DbSet.Remove(entity);
