@@ -14,13 +14,14 @@ namespace Domain.Trips
         public string Comment { get; private set; }
         public string From { get; private set; }
         public string To { get; private set; }
+        public int Seats { get; private set; }
         public DateTime StartingTime { get; private set; }
         public DateTime FinishTime { get; private set; }
         public List<PassengerInfo> Passengers { get; private set; } = new List<PassengerInfo>();
 
         public Trip() {}
 
-        public Trip(User driver, string from, string to, DateTime startingTime, DateTime finishTime, double price)
+        public Trip(User driver, string from, string to, DateTime startingTime, DateTime finishTime, double price, int seats)
         {
             Driver = driver;
             From = from;
@@ -28,6 +29,7 @@ namespace Domain.Trips
             StartingTime = startingTime;
             FinishTime = finishTime;
             Price = price;
+            Seats = seats;
         }
 
         public void AddComment(string comment)

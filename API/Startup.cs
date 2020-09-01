@@ -1,6 +1,8 @@
 using API.AuthHandlers;
 using Application.Cars.Queries.GetAllCarsQuery;
 using Application.Interfaces.Persistence;
+using Application.Reviews.Commands;
+using Application.Reviews.Query;
 using Application.Trips.Commands.AddPassengerCommand;
 using Application.Trips.Commands.CreateTripCommand;
 using Application.Trips.Commands.DeleteTripCommand;
@@ -64,12 +66,14 @@ namespace API
             // Init queries
             serviceCollection.AddScoped<IGetAllCarsQuery, GetAllCarsQuery>();
             serviceCollection.AddScoped<IGetAllTripsQuery, GetAllTripsQuery>();
+            serviceCollection.AddScoped<IGetAllReviewsQuery, GetAllReviewsQuery>();
 
             // Init commands
             serviceCollection.AddScoped<ICreateTripCommand, CreateTripCommand>();
             serviceCollection.AddScoped<IAddPassengerCommand, AddPassengerCommand>();
             serviceCollection.AddScoped<IRemovePassengerCommand, RemovePassengerCommand>();
             serviceCollection.AddScoped<IDeleteTripCommand, DeleteTripCommand>();
+            serviceCollection.AddScoped<ICreateReviewCommand, CreateReviewCommand>();
         }
 
         private static void InitRepositories(IServiceCollection serviceCollection)

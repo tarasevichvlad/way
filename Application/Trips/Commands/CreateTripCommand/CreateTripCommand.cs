@@ -21,7 +21,7 @@ namespace Application.Trips.Commands.CreateTripCommand
         {
             var user = _userRepository.Get(userId);
 
-            var trip = new Trip(user, model.From, model.To, model.StartingTime, model.FinishTime, model.Price);
+            var trip = new Trip(user, model.From, model.To, model.StartingTime, model.FinishTime, model.Price, model.Seats);
             
             trip.AddComment(model.Comment);
 
