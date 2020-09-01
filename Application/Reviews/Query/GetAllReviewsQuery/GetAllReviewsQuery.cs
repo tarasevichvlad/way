@@ -3,7 +3,7 @@ using System.Linq;
 using Application.Interfaces.Persistence;
 using Domain.Reviews;
 
-namespace Application.Reviews.Query
+namespace Application.Reviews.Query.GetAllReviewsQuery
 {
     public class GetAllReviewsQuery : IGetAllReviewsQuery
     {

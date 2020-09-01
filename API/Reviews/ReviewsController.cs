@@ -1,8 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
-using Application.Interfaces.Persistence;
 using Application.Reviews.Commands;
+using Application.Reviews.Commands.CreateReviewCommand;
 using Application.Reviews.Query;
+using Application.Reviews.Query.GetAllReviewsQuery;
 using Domain.Reviews;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

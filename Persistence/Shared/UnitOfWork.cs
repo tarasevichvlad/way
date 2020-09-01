@@ -10,6 +10,7 @@ namespace Persistence.Shared
         {
             _databaseContext = databaseContext;
         }
+
         public void Save()
         {
             _databaseContext.Save();

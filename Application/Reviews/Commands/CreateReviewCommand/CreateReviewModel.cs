@@ -1,6 +1,6 @@
 using System;
 
-namespace Application.Reviews.Commands
+namespace Application.Reviews.Commands.CreateReviewCommand
 {
     public class CreateReviewModel
     {

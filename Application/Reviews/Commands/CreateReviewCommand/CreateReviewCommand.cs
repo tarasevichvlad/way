@@ -1,7 +1,7 @@
 using Application.Interfaces.Persistence;
 using Domain.Reviews;
 
-namespace Application.Reviews.Commands
+namespace Application.Reviews.Commands.CreateReviewCommand
 {
     public class CreateReviewCommand : ICreateReviewCommand
     {

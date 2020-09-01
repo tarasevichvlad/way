@@ -1,4 +1,4 @@
-namespace Application.Reviews.Commands
+namespace Application.Reviews.Commands.CreateReviewCommand
 {
     public interface ICreateReviewCommand
     {
