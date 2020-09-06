@@ -1,9 +1,7 @@
 using API.AuthHandlers;
 using Application.Cars.Queries.GetAllCarsQuery;
 using Application.Interfaces.Persistence;
-using Application.Reviews.Commands;
 using Application.Reviews.Commands.CreateReviewCommand;
-using Application.Reviews.Query;
 using Application.Reviews.Query.GetAllReviewsQuery;
 using Application.Trips.Commands.AddPassengerCommand;
 using Application.Trips.Commands.CreateTripCommand;
@@ -20,11 +18,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Persistence.Cars;
 using Persistence.Reviews;
 using Persistence.Shared;
 using Persistence.Trips;
 using Persistence.Users;
+using Serilog;
 
 namespace API
 {
@@ -39,6 +39,11 @@ namespace API
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddLogging(x =>
+            {
+                x.ClearProviders();
+                x.AddSerilog(dispose: true);
+            });
             services.AddControllers();
 
             InitDb(services);
