@@ -1,0 +1,27 @@
+version: "3.8"
+
+networks:
+  way:
+    driver: bridge
+
+services:
+  web:
+    image: way:0.0.1-alpha
+    container_name: way-api
+    environment:
+      Database__ConnectionString: "Host=db;Port=5432;Database=way;Username=postgres;Password=secret"
+    networks:
+      - way
+    ports:
+    - 5000:80
+    depends_on:
+      - db
+  db:
+    image: postgres:latest
+    container_name: way-postgres
+    networks:
+      - way
+    ports:
+    - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: secret
