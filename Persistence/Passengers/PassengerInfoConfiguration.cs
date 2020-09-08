@@ -8,7 +8,7 @@ namespace Persistence.Passengers
     {
         public void Configure(EntityTypeBuilder<PassengerInfo> builder)
         {
-            builder.HasKey(x => x.Id);
+            builder.HasKey(x => new { x.TripId, x.PassengerId });
         }
     }
 }

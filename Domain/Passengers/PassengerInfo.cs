@@ -5,9 +5,8 @@ using Domain.Users;
 
 namespace Domain.Passengers
 {
-    public class PassengerInfo : IEntity
+    public class PassengerInfo
     {
-        public Guid Id { get; set; }
         public Guid TripId { get; set; }
         public Guid PassengerId { get; set; }
         public User Passenger { get; set; }
