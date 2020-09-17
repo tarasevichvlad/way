@@ -1,6 +1,7 @@
 using System;
 using Application.Interfaces.Persistence;
 using Domain.Passengers;
+using FluentResults;
 
 namespace Application.Trips.Commands.AddPassengerCommand
 {
@@ -17,7 +18,7 @@ namespace Application.Trips.Commands.AddPassengerCommand
             _unitOfWork = unitOfWork;
         }
 
-        public void Execute(Guid tripId, Guid userId)
+        public Result Execute(Guid tripId, Guid userId)
         {
             var trip = _tripRepository.Get(tripId);
             var user = _userRepository.Get(userId);
@@ -27,6 +28,8 @@ namespace Application.Trips.Commands.AddPassengerCommand
             trip.AddPassenger(passengerInfo);
 
             _unitOfWork.Save();
+            
+            return Result.Ok();
         }
     }
 }

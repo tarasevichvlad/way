@@ -9,7 +9,7 @@ namespace Domain.Users
         public Guid Id { get; set; }
         public string FirstName { get; private set; }
         public string LastName { get; private set; }
-        public int Phone { get; private set; }
+        public string Phone { get; private set; }
         public Car Car { get; private set; }
 
         public User(string firstName, string lastName)
@@ -18,7 +18,7 @@ namespace Domain.Users
             LastName = lastName;
         }
 
-        public User(string firstName, string lastName, int phone) : this(firstName, lastName)
+        public User(string firstName, string lastName, string phone) : this(firstName, lastName)
         {
             Phone = phone;
         }

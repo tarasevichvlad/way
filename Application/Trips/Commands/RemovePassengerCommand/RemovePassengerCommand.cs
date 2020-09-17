@@ -1,5 +1,6 @@
 using System;
 using Application.Interfaces.Persistence;
+using FluentResults;
 
 namespace Application.Trips.Commands.RemovePassengerCommand
 {
@@ -16,7 +17,7 @@ namespace Application.Trips.Commands.RemovePassengerCommand
             _unitOfWork = unitOfWork;
         }
 
-        public void Execute(Guid tripId, Guid deletedUserId)
+        public Result Execute(Guid tripId, Guid deletedUserId)
         {
             var trip = _tripRepository.GetTripWithPassengers(tripId);
             var deletedUser = _userRepository.Get(deletedUserId);
@@ -24,6 +25,8 @@ namespace Application.Trips.Commands.RemovePassengerCommand
             trip.RemovePassenger(deletedUser);
 
             _unitOfWork.Save();
+            
+            return Result.Ok();
         }
     }
 }

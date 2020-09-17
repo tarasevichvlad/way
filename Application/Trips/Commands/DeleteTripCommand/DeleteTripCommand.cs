@@ -1,5 +1,6 @@
 using System;
 using Application.Interfaces.Persistence;
+using FluentResults;
 
 namespace Application.Trips.Commands.DeleteTripCommand
 {
@@ -14,13 +15,15 @@ namespace Application.Trips.Commands.DeleteTripCommand
             _unitOfWork = unitOfWork;
         }
 
-        public void Execute(Guid tripId)
+        public Result Execute(Guid tripId)
         {
             var trip = _tripRepository.Get(tripId);
 
             _tripRepository.Remove(trip);
 
             _unitOfWork.Save();
+            
+            return Result.Ok();
         }
     }
 }

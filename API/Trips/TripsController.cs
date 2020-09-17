@@ -9,6 +9,7 @@ using Application.Trips.Commands.RemovePassengerCommand;
 using Application.Trips.Commands.Shared;
 using Application.Trips.Commands.UpdateTripCommand;
 using Application.Trips.Queries.GetAllTripsQuery;
+using Application.Trips.Queries.GetTripDetailQuery;
 using Domain.Trips;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -25,6 +26,7 @@ namespace API.Trips
         private readonly IRemovePassengerCommand _removePassengerCommand;
         private readonly IDeleteTripCommand _deleteTripCommand;
         private readonly IUpdateTripCommand _updateTripCommand;
+        private readonly IGetTripDetailQuery _getTripDetailQuery;
 
         public TripsController(
             IGetAllTripsQuery getAllTripsQuery,
@@ -32,7 +34,8 @@ namespace API.Trips
             IAddPassengerCommand addPassengerCommand,
             IRemovePassengerCommand removePassengerCommand,
             IDeleteTripCommand deleteTripCommand,
-            IUpdateTripCommand updateTripCommand)
+            IUpdateTripCommand updateTripCommand,
+            IGetTripDetailQuery getTripDetailQuery)
         {
             _getAllTripsQuery = getAllTripsQuery;
             _createTripCommand = createTripCommand;
@@ -40,6 +43,7 @@ namespace API.Trips
             _removePassengerCommand = removePassengerCommand;
             _deleteTripCommand = deleteTripCommand;
             _updateTripCommand = updateTripCommand;
+            _getTripDetailQuery = getTripDetailQuery;
         }
 
         [HttpGet]
@@ -48,22 +52,30 @@ namespace API.Trips
             return _getAllTripsQuery.Execute().ToList();
         }
 
+        [HttpGet("{tripId}")]
+        public ActionResult<Trip> GetById(Guid tripId)
+        {
+            var result = _getTripDetailQuery.Execute(tripId);
+
+            return result.IsSuccess ? (ActionResult<Trip>) result.Value : BadRequest(result.Errors);
+        }
+
         [HttpPost]
-        public IActionResult Create(CreateAndUpdateTripModel createAndUpdateTripModel)
+        public ActionResult Create(CreateAndUpdateTripModel createAndUpdateTripModel)
         {
             var userId = User.GetUserIdentifier();
 
-            _createTripCommand.Execute(createAndUpdateTripModel, userId);
+            var result = _createTripCommand.Execute(createAndUpdateTripModel, userId);
 
-            return StatusCode(StatusCodes.Status201Created);
+            return result.IsSuccess ? (ActionResult) StatusCode(StatusCodes.Status201Created) : BadRequest(result.Errors);
         }
 
         [HttpDelete("{tripId}")]
         public IActionResult Delete(Guid tripId)
         {
-            _deleteTripCommand.Execute(tripId);
+            var result = _deleteTripCommand.Execute(tripId);
 
-            return StatusCode(StatusCodes.Status200OK);
+            return result.IsSuccess ? (ActionResult) StatusCode(StatusCodes.Status200OK) : BadRequest(result.Errors);
         }
 
         [HttpPost("{tripId}/passenger")]
@@ -71,25 +83,25 @@ namespace API.Trips
         {
             var userId = User.GetUserIdentifier();
 
-            _addPassengerCommand.Execute(tripId, userId);
+            var result = _addPassengerCommand.Execute(tripId, userId);
 
-            return StatusCode(StatusCodes.Status200OK);
+            return result.IsSuccess ? (ActionResult) StatusCode(StatusCodes.Status200OK) : BadRequest(result.Errors);
         }
-        
+
         [HttpDelete("{tripId}/passenger")]
         public IActionResult RemovePassengerFromTrip(Guid tripId, Guid deletedUserId)
         {
-            _removePassengerCommand.Execute(tripId, deletedUserId);
+            var result = _removePassengerCommand.Execute(tripId, deletedUserId);
 
-            return StatusCode(StatusCodes.Status200OK);
+            return result.IsSuccess ? (ActionResult) StatusCode(StatusCodes.Status200OK) : BadRequest(result.Errors);
         }
 
         [HttpPut("{tripId}")]
         public IActionResult Update(Guid tripId, CreateAndUpdateTripModel createAndUpdateTripModel)
         {
-            _updateTripCommand.Execute(createAndUpdateTripModel, tripId);
+            var result = _updateTripCommand.Execute(createAndUpdateTripModel, tripId);
             
-            return StatusCode(StatusCodes.Status200OK);
+            return result.IsSuccess ? (ActionResult) StatusCode(StatusCodes.Status200OK) : BadRequest(result.Errors);
         }
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using Application.Interfaces.Persistence;
 using Application.Trips.Commands.Shared;
+using FluentResults;
 
 namespace Application.Trips.Commands.UpdateTripCommand
 {
@@ -15,7 +16,7 @@ namespace Application.Trips.Commands.UpdateTripCommand
             _unitOfWork = unitOfWork;
         }
 
-        public void Execute(CreateAndUpdateTripModel model, Guid tripId)
+        public Result Execute(CreateAndUpdateTripModel model, Guid tripId)
         {
             var trip = _tripRepository.Get(tripId);
 
@@ -24,6 +25,8 @@ namespace Application.Trips.Commands.UpdateTripCommand
             _tripRepository.Update(trip);
 
             _unitOfWork.Save();
+            
+            return Result.Ok();
         }
     }
 }

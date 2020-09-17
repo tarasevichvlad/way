@@ -1,10 +1,11 @@
 using System;
 using Application.Trips.Commands.Shared;
+using FluentResults;
 
 namespace Application.Trips.Commands.UpdateTripCommand
 {
     public interface IUpdateTripCommand
     {
-        void Execute(CreateAndUpdateTripModel createAndUpdateTripModel, Guid userId);
+        Result Execute(CreateAndUpdateTripModel createAndUpdateTripModel, Guid userId);
     }
 }

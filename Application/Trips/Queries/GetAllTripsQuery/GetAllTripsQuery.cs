@@ -1,7 +1,9 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Application.Interfaces.Persistence;
 using Domain.Trips;
+using FluentResults;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Trips.Queries.GetAllTripsQuery
@@ -15,7 +17,7 @@ namespace Application.Trips.Queries.GetAllTripsQuery
             _tripRepository = tripRepository;
         }
 
-        public IEnumerable<Trip> Execute()
+        public IEnumerable<Trip>  Execute()
         {
             return _tripRepository
                 .GetAll()

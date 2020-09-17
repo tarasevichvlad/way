@@ -1,9 +1,10 @@
 using System;
+using FluentResults;
 
 namespace Application.Trips.Commands.DeleteTripCommand
 {
     public interface IDeleteTripCommand
     {
-        void Execute(Guid tripId);
+        Result Execute(Guid tripId);
     }
 }
