@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using API.AuthHandlers;
 using Application.Cars.Queries.GetAllCarsQuery;
@@ -24,7 +25,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.IdentityModel.Logging;
 using Microsoft.OpenApi.Models;
 using Persistence.Cars;
 using Persistence.Reviews;
@@ -59,6 +59,7 @@ namespace API
                 var scopes = Configuration.GetSection("SwaggerAuthorization:Scopes")
                     .Get<string[]>()
                     .ToDictionary(k => k, v => v);
+                var servers = Configuration.GetSection("SwaggerAuthorization:Servers").Get<List<string>>();
 
                 x.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
                 {
@@ -67,12 +68,14 @@ namespace API
                     {
                         Implicit = new OpenApiOAuthFlow
                         {
-                            AuthorizationUrl = new Uri($"{sts}/authorize?p=B2C_1_SignIn"),
-                            TokenUrl = new Uri($"{sts}/token?p=B2C_1_SignIn"),
+                            AuthorizationUrl = new Uri($"{sts}/authorize"),
+                            TokenUrl = new Uri($"{sts}/token"),
                             Scopes = scopes
                         }
                     }
                 });
+
+                x.SwaggerGeneratorOptions.Servers.AddRange(servers.Select(x => new OpenApiServer { Url = x }));
 
                 x.AddSecurityRequirement(new OpenApiSecurityRequirement
                 {
@@ -113,7 +116,6 @@ namespace API
 
             if (env.IsDevelopment())
             {
-                IdentityModelEventSource.ShowPII = true;
                 app.UseDeveloperExceptionPage();
             }
 
@@ -123,7 +125,7 @@ namespace API
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
-                c.OAuthClientId("a34eda25-b280-451e-a1ad-583e8f6bc22b");
+                c.OAuthClientId(Configuration["SwaggerAuthorization:ClientId"]);
             });
 
             app.UseRouting();
