@@ -28,9 +28,24 @@ namespace Domain.Users
             Id = id;
         }
 
-        public void AddCar(Car car)
+        public void AddOrUpdateCar(Car car)
         {
-            Car = car;
+            Car ??= car;
+
+            if (Car.Model != car.Model)
+            {
+                Car.Model = car.Model;
+            }
+
+            if (Car.RegistrationPlate != car.RegistrationPlate)
+            {
+                Car.RegistrationPlate = car.RegistrationPlate;
+            }
+        }
+
+        public void AddPhone(string phone)
+        {
+            Phone = phone;
         }
     }
 }

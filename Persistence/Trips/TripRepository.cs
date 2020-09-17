@@ -17,6 +17,7 @@ namespace Persistence.Trips
         {
             return DbSet
                 .Include(x => x.Passengers)
+                .Include(x => x.Driver).ThenInclude(x => x.Car)
                 .SingleOrDefault(x => x.Id.Equals(tripId));
         }
     }

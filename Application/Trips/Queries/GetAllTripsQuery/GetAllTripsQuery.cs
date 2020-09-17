@@ -1,9 +1,7 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Application.Interfaces.Persistence;
 using Domain.Trips;
-using FluentResults;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Trips.Queries.GetAllTripsQuery
@@ -22,6 +20,7 @@ namespace Application.Trips.Queries.GetAllTripsQuery
             return _tripRepository
                 .GetAll()
                 .Include(x => x.Passengers)
+                .Include(x => x.Driver).ThenInclude(x => x.Car)
                 .ToList();
         }
     }
