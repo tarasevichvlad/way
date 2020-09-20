@@ -20,7 +20,15 @@ namespace Application.Trips.Commands.UpdateTripCommand
         {
             var trip = _tripRepository.Get(tripId);
 
-            trip.Update(model.From, model.To, model.StartingTime, model.FinishTime, model.Price, model.Seats, model.Comment);
+            trip.Update(
+                model.From,
+                model.To,
+                model.StartingTime,
+                model.FinishTime,
+                model.Price,
+                model.Seats,
+                model.Comment,
+                model.OnlyTwo);
 
             _tripRepository.Update(trip);
 

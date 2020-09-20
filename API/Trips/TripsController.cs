@@ -10,6 +10,7 @@ using Application.Trips.Commands.Shared;
 using Application.Trips.Commands.UpdateTripCommand;
 using Application.Trips.Queries.GetAllTripsQuery;
 using Application.Trips.Queries.GetTripDetailQuery;
+using Application.Trips.Queries.SearchTripsQuery;
 using Domain.Trips;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -27,6 +28,7 @@ namespace API.Trips
         private readonly IDeleteTripCommand _deleteTripCommand;
         private readonly IUpdateTripCommand _updateTripCommand;
         private readonly IGetTripDetailQuery _getTripDetailQuery;
+        private readonly ISearchTripsQuery _searchTripsQuery;
 
         public TripsController(
             IGetAllTripsQuery getAllTripsQuery,
@@ -35,7 +37,8 @@ namespace API.Trips
             IRemovePassengerCommand removePassengerCommand,
             IDeleteTripCommand deleteTripCommand,
             IUpdateTripCommand updateTripCommand,
-            IGetTripDetailQuery getTripDetailQuery)
+            IGetTripDetailQuery getTripDetailQuery,
+            ISearchTripsQuery searchTripsQuery)
         {
             _getAllTripsQuery = getAllTripsQuery;
             _createTripCommand = createTripCommand;
@@ -44,12 +47,15 @@ namespace API.Trips
             _deleteTripCommand = deleteTripCommand;
             _updateTripCommand = updateTripCommand;
             _getTripDetailQuery = getTripDetailQuery;
+            _searchTripsQuery = searchTripsQuery;
         }
 
-        [HttpGet]
+        [HttpGet("me")]
         public ActionResult<IEnumerable<Trip>> Get()
         {
-            return _getAllTripsQuery.Execute().ToList();
+            var userId = User.GetUserIdentifier();
+
+            return _getAllTripsQuery.Execute(userId).ToList();
         }
 
         [HttpGet("{tripId}")]
@@ -102,6 +108,12 @@ namespace API.Trips
             var result = _updateTripCommand.Execute(createAndUpdateTripModel, tripId);
             
             return result.IsSuccess ? (ActionResult) StatusCode(StatusCodes.Status200OK) : BadRequest(result.Errors);
+        }
+
+        [HttpPost("search")]
+        public ActionResult<IEnumerable<Trip>> Search(SearchTripsModel searchTripsModel)
+        {
+            return _searchTripsQuery.Execute(searchTripsModel);
         }
     }
 }

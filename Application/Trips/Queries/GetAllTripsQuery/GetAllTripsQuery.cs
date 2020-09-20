@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Application.Interfaces.Persistence;
@@ -15,10 +16,11 @@ namespace Application.Trips.Queries.GetAllTripsQuery
             _tripRepository = tripRepository;
         }
 
-        public IEnumerable<Trip>  Execute()
+        public IEnumerable<Trip> Execute(Guid userId)
         {
             return _tripRepository
                 .GetAll()
+                .Where(x => x.Driver.Id.Equals(userId) || x.Passengers.Any(y => y.PassengerId.Equals(userId)))
                 .Include(x => x.Passengers)
                 .Include(x => x.Driver).ThenInclude(x => x.Car)
                 .ToList();

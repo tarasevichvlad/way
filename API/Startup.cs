@@ -14,6 +14,7 @@ using Application.Trips.Commands.RemovePassengerCommand;
 using Application.Trips.Commands.UpdateTripCommand;
 using Application.Trips.Queries.GetAllTripsQuery;
 using Application.Trips.Queries.GetTripDetailQuery;
+using Application.Trips.Queries.SearchTripsQuery;
 using Application.Users.Commands.AddOrUpdateCarCommand;
 using Application.Users.Commands.UpdateUserCommand;
 using Application.Users.Queries.GetAllUsersQuery;
@@ -148,6 +149,7 @@ namespace API
             serviceCollection.AddScoped<IGetReviewByIdQuery, GetReviewByIdQuery>();
             serviceCollection.AddScoped<IGetReviewByIdQuery, GetReviewByIdQuery>();
             serviceCollection.AddScoped<IGetAllUsersQuery, GetAllUsersQuery>();
+            serviceCollection.AddScoped<ISearchTripsQuery, SearchTripsQuery>();
 
             // Init commands
             serviceCollection.AddScoped<ICreateTripCommand, CreateTripCommand>();

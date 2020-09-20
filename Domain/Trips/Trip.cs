@@ -15,6 +15,7 @@ namespace Domain.Trips
         public string From { get; private set; }
         public string To { get; private set; }
         public int Seats { get; private set; }
+        public bool OnlyTwoBehind { get; set; }
         public DateTime StartingTime { get; private set; }
         public DateTime FinishTime { get; private set; }
         public List<PassengerInfo> Passengers { get; private set; } = new List<PassengerInfo>();
@@ -49,7 +50,7 @@ namespace Domain.Trips
             Passengers.Remove(passengerInfo);
         }
 
-        public void Update(string from, string to, DateTime startingTime, DateTime finishTime, double price, int seats, string comment)
+        public void Update(string from, string to, DateTime startingTime, DateTime finishTime, double price, int seats, string comment, bool onlyTwoBehind)
         {
             if (!From.Equals(from))
             {
@@ -84,6 +85,11 @@ namespace Domain.Trips
             if (!Comment.Equals(comment))
             {
                 Comment = comment;
+            }
+
+            if (!OnlyTwoBehind.Equals(onlyTwoBehind))
+            {
+                OnlyTwoBehind = onlyTwoBehind;
             }
         }
     }
