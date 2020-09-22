@@ -7,6 +7,6 @@ namespace Application.Reviews.Commands.CreateReviewCommand
         public Guid From { get; set; }
         public Guid To { get; set; }
         public string Body { get; set; }
-        public int Rating { get; set; }
+        public double Rating { get; set; }
     }
 }

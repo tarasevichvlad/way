@@ -10,6 +10,7 @@ namespace Domain.Users
         public string FirstName { get; private set; }
         public string LastName { get; private set; }
         public string Phone { get; private set; }
+        public double Rating { get; set; }
         public Car Car { get; private set; }
 
         public User(string firstName, string lastName)
@@ -41,6 +42,11 @@ namespace Domain.Users
             {
                 Car.RegistrationPlate = car.RegistrationPlate;
             }
+        }
+
+        public void UpdateRating(double rating)
+        {
+            Rating = rating;
         }
 
         public void AddPhone(string phone)
