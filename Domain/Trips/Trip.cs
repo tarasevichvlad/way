@@ -22,7 +22,7 @@ namespace Domain.Trips
 
         public Trip() {}
 
-        public Trip(User driver, string from, string to, DateTime startingTime, DateTime finishTime, double price, int seats)
+        public Trip(User driver, string from, string to, DateTime startingTime, DateTime finishTime, double price, int seats, bool onlyTwoBehind)
         {
             Driver = driver;
             From = from;
@@ -31,6 +31,7 @@ namespace Domain.Trips
             FinishTime = finishTime;
             Price = price;
             Seats = seats;
+            OnlyTwoBehind = onlyTwoBehind;
         }
 
         public void AddComment(string comment)

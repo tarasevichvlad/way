@@ -23,7 +23,7 @@ namespace Application.Trips.Commands.CreateTripCommand
         {
             var user = _userRepository.Get(userId);
 
-            var trip = new Trip(user, model.From, model.To, model.StartingTime, model.FinishTime, model.Price, model.Seats);
+            var trip = new Trip(user, model.From, model.To, model.StartingTime, model.FinishTime, model.Price, model.Seats, model.OnlyTwo);
             
             trip.AddComment(model.Comment);
 
