@@ -12,7 +12,9 @@ using Application.Trips.Commands.CreateTripCommand;
 using Application.Trips.Commands.DeleteTripCommand;
 using Application.Trips.Commands.RemovePassengerCommand;
 using Application.Trips.Commands.UpdateTripCommand;
+using Application.Trips.Queries.GetActiveTripsQuery;
 using Application.Trips.Queries.GetAllTripsQuery;
+using Application.Trips.Queries.GetFinishedTripsQuery;
 using Application.Trips.Queries.GetTripDetailQuery;
 using Application.Trips.Queries.SearchTripsQuery;
 using Application.Users.Commands.AddOrUpdateCarCommand;
@@ -139,27 +141,29 @@ namespace API
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
 
-        private static void InitCommandsAndQueries(IServiceCollection serviceCollection)
+        private static void InitCommandsAndQueries(IServiceCollection sc)
         {
             // Init queries
-            serviceCollection.AddScoped<IGetAllCarsQuery, GetAllCarsQuery>();
-            serviceCollection.AddScoped<IGetAllTripsQuery, GetAllTripsQuery>();
-            serviceCollection.AddScoped<IGetAllReviewsQuery, GetAllReviewsQuery>();
-            serviceCollection.AddScoped<IGetTripDetailQuery, GetTripDetailQuery>();
-            serviceCollection.AddScoped<IGetReviewByIdQuery, GetReviewByIdQuery>();
-            serviceCollection.AddScoped<IGetReviewByIdQuery, GetReviewByIdQuery>();
-            serviceCollection.AddScoped<IGetAllUsersQuery, GetAllUsersQuery>();
-            serviceCollection.AddScoped<ISearchTripsQuery, SearchTripsQuery>();
+            sc.AddScoped<IGetAllCarsQuery, GetAllCarsQuery>();
+            sc.AddScoped<IGetAllTripsQuery, GetAllTripsQuery>();
+            sc.AddScoped<IGetAllReviewsQuery, GetAllReviewsQuery>();
+            sc.AddScoped<IGetTripDetailQuery, GetTripDetailQuery>();
+            sc.AddScoped<IGetReviewByIdQuery, GetReviewByIdQuery>();
+            sc.AddScoped<IGetReviewByIdQuery, GetReviewByIdQuery>();
+            sc.AddScoped<IGetAllUsersQuery, GetAllUsersQuery>();
+            sc.AddScoped<ISearchTripsQuery, SearchTripsQuery>();
+            sc.AddScoped<IGetActiveTripsQuery, GetActiveTripsQuery>();
+            sc.AddScoped<IGetFinishedTripsQuery, GetFinishedTripsQuery>();
 
             // Init commands
-            serviceCollection.AddScoped<ICreateTripCommand, CreateTripCommand>();
-            serviceCollection.AddScoped<IAddPassengerCommand, AddPassengerCommand>();
-            serviceCollection.AddScoped<IRemovePassengerCommand, RemovePassengerCommand>();
-            serviceCollection.AddScoped<IDeleteTripCommand, DeleteTripCommand>();
-            serviceCollection.AddScoped<ICreateReviewCommand, CreateReviewCommand>();
-            serviceCollection.AddScoped<IUpdateTripCommand, UpdateTripCommand>();
-            serviceCollection.AddScoped<IUpdateUserPhoneCommand, UpdateUserPhoneCommand>();
-            serviceCollection.AddScoped<IAddOrUpdateCarCommand, AddOrUpdateCarCommand>();
+            sc.AddScoped<ICreateTripCommand, CreateTripCommand>();
+            sc.AddScoped<IAddPassengerCommand, AddPassengerCommand>();
+            sc.AddScoped<IRemovePassengerCommand, RemovePassengerCommand>();
+            sc.AddScoped<IDeleteTripCommand, DeleteTripCommand>();
+            sc.AddScoped<ICreateReviewCommand, CreateReviewCommand>();
+            sc.AddScoped<IUpdateTripCommand, UpdateTripCommand>();
+            sc.AddScoped<IUpdateUserPhoneCommand, UpdateUserPhoneCommand>();
+            sc.AddScoped<IAddOrUpdateCarCommand, AddOrUpdateCarCommand>();
         }
 
         private static void InitRepositories(IServiceCollection serviceCollection)

@@ -8,7 +8,9 @@ using Application.Trips.Commands.DeleteTripCommand;
 using Application.Trips.Commands.RemovePassengerCommand;
 using Application.Trips.Commands.Shared;
 using Application.Trips.Commands.UpdateTripCommand;
+using Application.Trips.Queries.GetActiveTripsQuery;
 using Application.Trips.Queries.GetAllTripsQuery;
+using Application.Trips.Queries.GetFinishedTripsQuery;
 using Application.Trips.Queries.GetTripDetailQuery;
 using Application.Trips.Queries.SearchTripsQuery;
 using Domain.Trips;
@@ -29,6 +31,8 @@ namespace API.Trips
         private readonly IUpdateTripCommand _updateTripCommand;
         private readonly IGetTripDetailQuery _getTripDetailQuery;
         private readonly ISearchTripsQuery _searchTripsQuery;
+        private readonly IGetActiveTripsQuery _getActiveTripsQuery;
+        private readonly IGetFinishedTripsQuery _getFinishedTripsQuery;
 
         public TripsController(
             IGetAllTripsQuery getAllTripsQuery,
@@ -38,7 +42,9 @@ namespace API.Trips
             IDeleteTripCommand deleteTripCommand,
             IUpdateTripCommand updateTripCommand,
             IGetTripDetailQuery getTripDetailQuery,
-            ISearchTripsQuery searchTripsQuery)
+            ISearchTripsQuery searchTripsQuery,
+            IGetActiveTripsQuery getActiveTripsQuery,
+            IGetFinishedTripsQuery getFinishedTripsQuery)
         {
             _getAllTripsQuery = getAllTripsQuery;
             _createTripCommand = createTripCommand;
@@ -48,6 +54,8 @@ namespace API.Trips
             _updateTripCommand = updateTripCommand;
             _getTripDetailQuery = getTripDetailQuery;
             _searchTripsQuery = searchTripsQuery;
+            _getActiveTripsQuery = getActiveTripsQuery;
+            _getFinishedTripsQuery = getFinishedTripsQuery;
         }
 
         [HttpGet("me")]
@@ -56,6 +64,22 @@ namespace API.Trips
             var userId = User.GetUserIdentifier();
 
             return _getAllTripsQuery.Execute(userId).ToList();
+        }
+
+        [HttpGet("me/active")]
+        public ActionResult<IEnumerable<Trip>> GetActive()
+        {
+            var userId = User.GetUserIdentifier();
+
+            return _getActiveTripsQuery.Execute(userId).ToList();
+        }
+
+        [HttpGet("me/finished")]
+        public ActionResult<IEnumerable<Trip>> GetFinished()
+        {
+            var userId = User.GetUserIdentifier();
+
+            return _getFinishedTripsQuery.Execute(userId).ToList();
         }
 
         [HttpGet("{tripId}")]
