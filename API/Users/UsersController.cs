@@ -4,6 +4,7 @@ using API.Extensions;
 using Application.Users.Commands.AddOrUpdateCarCommand;
 using Application.Users.Commands.UpdateUserCommand;
 using Application.Users.Queries.GetAllUsersQuery;
+using Application.Users.Queries.GetUserInfoQuery;
 using Domain.Cars;
 using Domain.Users;
 using Microsoft.AspNetCore.Http;
@@ -13,26 +14,37 @@ namespace API.Users
 {
     [ApiController]
     [Route("[controller]")]
-    public class UserController : ControllerBase
+    public class UsersController : ControllerBase
     {
         private readonly IGetAllUsersQuery _getAllUsersQuery;
         private readonly IUpdateUserPhoneCommand _updateUserPhoneCommand;
         private readonly IAddOrUpdateCarCommand _addOrUpdateCarCommand;
+        private readonly IGetUserInfoQuery _getUserInfoQuery;
 
-        public UserController(
+        public UsersController(
             IGetAllUsersQuery getAllUsersQuery,
             IUpdateUserPhoneCommand updateUserPhoneCommand,
-            IAddOrUpdateCarCommand addOrUpdateCarCommand)
+            IAddOrUpdateCarCommand addOrUpdateCarCommand,
+            IGetUserInfoQuery getUserInfoQuery)
         {
             _getAllUsersQuery = getAllUsersQuery;
             _updateUserPhoneCommand = updateUserPhoneCommand;
             _addOrUpdateCarCommand = addOrUpdateCarCommand;
+            _getUserInfoQuery = getUserInfoQuery;
         }
 
         [HttpGet]
         public ActionResult<IEnumerable<User>> GetAllUsers()
         {
             return _getAllUsersQuery.Execute().ToList();
+        }
+
+        [HttpGet("me")]
+        public ActionResult<User> GetMyInfo()
+        {
+            var userId = User.GetUserIdentifier();
+
+            return _getUserInfoQuery.Execute(userId);
         }
 
         [HttpPost("phone")]

@@ -20,6 +20,7 @@ using Application.Trips.Queries.SearchTripsQuery;
 using Application.Users.Commands.AddOrUpdateCarCommand;
 using Application.Users.Commands.UpdateUserCommand;
 using Application.Users.Queries.GetAllUsersQuery;
+using Application.Users.Queries.GetUserInfoQuery;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.AzureADB2C.UI;
 using Microsoft.AspNetCore.Authorization;
@@ -154,6 +155,7 @@ namespace API
             sc.AddScoped<ISearchTripsQuery, SearchTripsQuery>();
             sc.AddScoped<IGetActiveTripsQuery, GetActiveTripsQuery>();
             sc.AddScoped<IGetFinishedTripsQuery, GetFinishedTripsQuery>();
+            sc.AddScoped<IGetUserInfoQuery, GetUserInfoQuery>();
 
             // Init commands
             sc.AddScoped<ICreateTripCommand, CreateTripCommand>();
