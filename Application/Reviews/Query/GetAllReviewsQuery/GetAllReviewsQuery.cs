@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Application.Interfaces.Persistence;
 using Domain.Reviews;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Reviews.Query.GetAllReviewsQuery
 {
@@ -16,7 +17,11 @@ namespace Application.Reviews.Query.GetAllReviewsQuery
 
         public IEnumerable<Review> Execute()
         {
-            return _reviewRepository.GetAll().ToList();
+            return _reviewRepository
+                .GetAll()
+                .Include(x => x.From)
+                .Include(x => x.To)
+                .ToList();
         }
     }
 }

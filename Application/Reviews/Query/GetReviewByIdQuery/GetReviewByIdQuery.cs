@@ -17,7 +17,7 @@ namespace Application.Reviews.Query.GetReviewByIdQuery
 
         public IEnumerable<Review> Execute(Guid userId)
         {
-            return _reviewRepository.GetAll().Where(x => x.To.Id.Equals(userId)).ToList();
+            return _reviewRepository.GetMyReviews(userId);
         }
     }
 }
