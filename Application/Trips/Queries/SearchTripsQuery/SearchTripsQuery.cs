@@ -3,7 +3,7 @@ using System.Linq;
 using Application.Interfaces.Persistence;
 using Application.Trips.Commands.Shared;
 using Domain.Trips;
-using FluentResults;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Trips.Queries.SearchTripsQuery
 {
@@ -20,6 +20,7 @@ namespace Application.Trips.Queries.SearchTripsQuery
         {
             var trips = _tripRepository
                 .GetAll()
+                .Include(x => x.Driver)
                 .Where(x =>
                     x.From.Equals(searchTripsModel.From) &&
                     x.To.Equals(searchTripsModel.To) &&

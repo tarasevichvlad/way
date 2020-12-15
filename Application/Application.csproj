@@ -9,8 +9,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="FluentResults" Version="2.2.0" />
-      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.0-preview.7.20365.15" />
+      <PackageReference Include="FluentResults" Version="2.3.0" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.1" />
     </ItemGroup>
 
 </Project>
