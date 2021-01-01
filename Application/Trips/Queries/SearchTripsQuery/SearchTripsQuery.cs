@@ -25,8 +25,10 @@ namespace Application.Trips.Queries.SearchTripsQuery
                     x.From.Equals(searchTripsModel.From) &&
                     x.To.Equals(searchTripsModel.To) &&
                     x.Seats - x.Passengers.Count >= searchTripsModel.Seats &&
-                    x.StartingTime.Equals(searchTripsModel.DateTime) &&
-                    x.OnlyTwoBehind.Equals(searchTripsModel.OnlyTwo))
+                    x.StartingTime >= searchTripsModel.DateTime &&
+                    (searchTripsModel.OnlyTwo
+                        ? x.OnlyTwoBehind.Equals(searchTripsModel.OnlyTwo)
+                        : x.OnlyTwoBehind.Equals(true) || x.OnlyTwoBehind.Equals(false)))
                 .ToList();
 
             return trips;
