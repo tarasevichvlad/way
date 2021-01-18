@@ -14,9 +14,11 @@ namespace Application.Trips.Queries.GetTripDetailQuery
             _tripRepository = tripRepository;
         }
 
-        public Result<Trip> Execute(Guid tripId)
+        public Result<Trip> Execute(Guid tripId, Guid userId)
         {
             var trip = _tripRepository.GetTripWithPassengers(tripId);
+            
+            trip.CheckUserApplied(userId);
 
             if (trip != null)
             {

@@ -85,7 +85,8 @@ namespace API.Trips
         [HttpGet("{tripId}")]
         public ActionResult<Trip> GetById(Guid tripId)
         {
-            var result = _getTripDetailQuery.Execute(tripId);
+            var userId = User.GetUserIdentifier();
+            var result = _getTripDetailQuery.Execute(tripId, userId);
 
             return result.IsSuccess ? (ActionResult<Trip>) result.Value : BadRequest(result.Errors);
         }
