@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using Domain.Passengers;
 using Domain.Shared;
@@ -20,6 +21,7 @@ namespace Domain.Trips
         public DateTime StartingTime { get; private set; }
         public DateTime FinishTime { get; private set; }
         public List<PassengerInfo> Passengers { get; private set; } = new List<PassengerInfo>();
+        [NotMapped]
         public bool UserApplied { get; set; }
 
         public Trip() {}
