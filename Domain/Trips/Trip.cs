@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Domain.Passengers;
 using Domain.Shared;
 using Domain.Users;
@@ -19,6 +20,7 @@ namespace Domain.Trips
         public DateTime StartingTime { get; private set; }
         public DateTime FinishTime { get; private set; }
         public List<PassengerInfo> Passengers { get; private set; } = new List<PassengerInfo>();
+        public bool UserApplied { get; set; }
 
         public Trip() {}
 
@@ -49,6 +51,14 @@ namespace Domain.Trips
             var passengerInfo = Passengers.Find(x => x.PassengerId.Equals(passenger.Id));
 
             Passengers.Remove(passengerInfo);
+        }
+
+        public void CheckUserApplied(Guid userId)
+        {
+            if (Driver.Id.Equals(userId) || Passengers.Select(x => x.PassengerId.Equals(userId)).Any())
+            {
+                UserApplied = true;
+            }
         }
 
         public void Update(string from, string to, DateTime startingTime, DateTime finishTime, double price, int seats, string comment, bool onlyTwoBehind)

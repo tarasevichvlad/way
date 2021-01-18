@@ -137,7 +137,9 @@ namespace API.Trips
         [HttpPost("search")]
         public ActionResult<IEnumerable<Trip>> Search(SearchTripsModel searchTripsModel)
         {
-            return _searchTripsQuery.Execute(searchTripsModel);
+            var userId = User.GetUserIdentifier();
+
+            return _searchTripsQuery.Execute(searchTripsModel, userId);
         }
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Application.Interfaces.Persistence;
@@ -16,7 +17,7 @@ namespace Application.Trips.Queries.SearchTripsQuery
             _tripRepository = tripRepository;
         }
 
-        public List<Trip> Execute(SearchTripsModel searchTripsModel)
+        public List<Trip> Execute(SearchTripsModel searchTripsModel, Guid userId)
         {
             var trips = _tripRepository
                 .GetAll()
@@ -30,6 +31,11 @@ namespace Application.Trips.Queries.SearchTripsQuery
                         ? x.OnlyTwoBehind.Equals(searchTripsModel.OnlyTwo)
                         : x.OnlyTwoBehind.Equals(true) || x.OnlyTwoBehind.Equals(false)))
                 .ToList();
+
+            foreach (var trip in trips)
+            {
+                trip.CheckUserApplied(userId);
+            }
 
             return trips;
         }
