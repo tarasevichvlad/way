@@ -22,9 +22,12 @@ namespace Application.Trips.Queries.SearchTripsQuery
             var trips = _tripRepository
                 .GetAll()
                 .Include(x => x.Driver)
+                .Include(x => x.Passengers)
                 .Where(x =>
                     x.From.Equals(searchTripsModel.From) &&
                     x.To.Equals(searchTripsModel.To) &&
+                    !x.Driver.Id.Equals(userId) &&
+                    !x.Passengers.Any(y => y.PassengerId.Equals(userId)) &&
                     x.Seats - x.Passengers.Count >= searchTripsModel.Seats &&
                     x.StartingTime >= searchTripsModel.DateTime &&
                     (searchTripsModel.OnlyTwo
