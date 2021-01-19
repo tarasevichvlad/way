@@ -22,6 +22,7 @@ namespace Application.Trips.Queries.GetActiveTripsQuery
 
             var items = _tripRepository
                 .GetAll()
+                .Include(x => x.Passengers).ThenInclude(x => x.Passenger)
                 .Where(
                     x => (x.Driver.Id.Equals(userId) ||
                           x.Passengers.Any(y => y.PassengerId.Equals(userId))) &&

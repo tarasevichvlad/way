@@ -20,6 +20,7 @@ namespace Application.Trips.Queries.GetAllTripsQuery
         {
             return _tripRepository
                 .GetAll()
+                .Include(x => x.Passengers).ThenInclude(x => x.Passenger)
                 .Where(x => x.Driver.Id.Equals(userId) || x.Passengers.Any(y => y.PassengerId.Equals(userId)))
                 .Include(x => x.Passengers)
                 .Include(x => x.Driver).ThenInclude(x => x.Car)
